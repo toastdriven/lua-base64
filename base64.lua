@@ -64,21 +64,19 @@ end
 
 
 function from_base64(to_decode)
+    local padded = to_decode:gsub("%s", "")
+    local unpadded = padded:gsub("=", "")
     local bit_pattern = ''
     local decoded = ''
 
-    for i = 1, string.len(to_decode) do
+    for i = 1, string.len(unpadded) do
         local char = string.sub(to_decode, i, i)
-
-        if char ~= '=' then
-            local offset, _ = string.find(index_table, char)
-
-            if offset == nil then
-                error("Invalid character '" .. char .. "' found.")
-            end
-
-            bit_pattern = bit_pattern .. string.sub(to_binary(offset-1), 3)
+        local offset, _ = string.find(index_table, char)
+        if offset == nil then
+             error("Invalid character '" .. char .. "' found.")
         end
+
+        bit_pattern = bit_pattern .. string.sub(to_binary(offset-1), 3)
     end
 
     for i = 1, string.len(bit_pattern), 8 do
@@ -86,5 +84,10 @@ function from_base64(to_decode)
         decoded = decoded .. string.char(from_binary(byte))
     end
 
+    local padding_length = padded:len()-unpadded:len()
+
+    if (padding_length == 1 or padding_length == 2) then
+        decoded = decoded:sub(1,-2)
+    end
     return decoded
 end
