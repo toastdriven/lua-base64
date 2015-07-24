@@ -2,6 +2,8 @@
 -- Sourced from http://en.wikipedia.org/wiki/Base64
 require('math')
 
+local P={}
+base64 = P
 
 local __author__ = 'Daniel Lindsley'
 local __version__ = 'scm-1'
@@ -34,7 +36,7 @@ function from_binary(bin_bits)
 end
 
 
-function to_base64(to_encode)
+function base64.encode(to_encode)
     local bit_pattern = ''
     local encoded = ''
     local trailing = ''
@@ -63,7 +65,7 @@ function to_base64(to_encode)
 end
 
 
-function from_base64(to_decode)
+function base64.decode(to_decode)
     local padded = to_decode:gsub("%s", "")
     local unpadded = padded:gsub("=", "")
     local bit_pattern = ''
@@ -91,3 +93,5 @@ function from_base64(to_decode)
     end
     return decoded
 end
+
+return base64
