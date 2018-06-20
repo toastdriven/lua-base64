@@ -45,10 +45,10 @@ function to_base64(to_encode)
 
     -- Check the number of bytes. If it's not evenly divisible by three,
     -- zero-pad the ending & append on the correct number of ``=``s.
-    if math.mod(string.len(bit_pattern), 3) == 2 then
+    if math.mod(string.len(bit_pattern), 3) == 2 then   # use math.fmod if using LUA 5.1+
         trailing = '=='
         bit_pattern = bit_pattern .. '0000000000000000'
-    elseif math.mod(string.len(bit_pattern), 3) == 1 then
+    elseif math.mod(string.len(bit_pattern), 3) == 1 then   # use math.fmod if using LUA 5.1+
         trailing = '='
         bit_pattern = bit_pattern .. '00000000'
     end
