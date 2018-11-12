@@ -1,7 +1,5 @@
 -- Base64-encoding
 -- Sourced from http://en.wikipedia.org/wiki/Base64
-require('math')
-
 
 local __author__ = 'Daniel Lindsley'
 local __version__ = 'scm-1'
@@ -16,7 +14,7 @@ function to_binary(integer)
     local bin_bits = ''
 
     for i = 7, 0, -1 do
-        local current_power = math.pow(2, i)
+        local current_power = 2 ^ i
 
         if remaining >= current_power then
             bin_bits = bin_bits .. '1'
@@ -45,10 +43,10 @@ function to_base64(to_encode)
 
     -- Check the number of bytes. If it's not evenly divisible by three,
     -- zero-pad the ending & append on the correct number of ``=``s.
-    if math.mod(string.len(bit_pattern), 3) == 2 then
+    if string.len(bit_pattern) % 3 == 2 then
         trailing = '=='
         bit_pattern = bit_pattern .. '0000000000000000'
-    elseif math.mod(string.len(bit_pattern), 3) == 1 then
+    elseif string.len(bit_pattern) % 3 == 1 then
         trailing = '='
         bit_pattern = bit_pattern .. '00000000'
     end
